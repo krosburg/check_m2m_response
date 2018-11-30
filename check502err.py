@@ -38,10 +38,9 @@ else:
 print("Status Code: %i" % res.status_code)
 
 # Add Message to Log
-if value_502  and t_str:
-    file_entry = "%s,%i,%2.5f\n" % (t_str, value_502, tdiff)
-    for t_win in time_windows:
-        log_file = log_base + t_win + ".log"
-        f = open(log_file, "a+")
-        f.write(file_entry)
-        f.close()
+file_entry = "%s,%i,%2.5f\n" % (t_str, value_502, tdiff)
+for t_win in time_windows:
+    log_file = log_base + t_win + ".log"
+    f = open(log_file, "a+")
+    f.write(file_entry)
+    f.close()
