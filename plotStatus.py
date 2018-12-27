@@ -47,7 +47,7 @@ def tidyXAxis(date_fmt, tsize):
 
 def addLegend():
     """Adds legend to plot."""
-    box_y = -.50*(1 + (1.5*.225))
+    box_y = -.50*(1 + (2.25*.225))
     return plt.legend(loc='lower right', bbox_to_anchor=(1.005, box_y),
                       fontsize=20, frameon=False)
 
