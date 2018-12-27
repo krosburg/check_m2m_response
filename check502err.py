@@ -25,10 +25,6 @@ try:
     res = requests.get(url, auth=(UKEY, TOKE), timeout=10, verify=False)
     t_aft = datetime.utcnow()
 
-    # Calculate Run Time Difference
-    tdiff = t_aft - t_bef
-    tdiff = tdiff.seconds + (tdiff.microseconds*1E-6)
-
     # Assign values based on status code from request
     if res.status_code == 502:
         value_502 = 0
@@ -39,10 +35,15 @@ try:
     print("Status Code: %i" % res.status_code)
 
 except err:
+    t_aft = datetime.utcnow()
     print("Timeout likely.")
     print(err)
-    tdiff=10000000.0
-    value_502 = 1
+    value_502 = 3
+
+# Calculate Run Time Difference
+tdiff = t_aft - t_bef
+tdiff = tdiff.seconds + (tdiff.microseconds*1E-6)
+
 
 # Add Message to Log
 file_entry = "%s,%i,%2.5f\n" % (t_str, value_502, tdiff)

@@ -82,6 +82,7 @@ t = np.array(t)
 ired = df.index[df[1] == 0].tolist()
 iyel = df.index[df[1] == 1].tolist()
 igrn = df.index[df[1] == 2].tolist()
+iblk = df.index[df[1] == 3].tolist()
 
 # Plot Datas
 fig = plt.figure(1, figsize=(18, 4.475))
@@ -89,6 +90,7 @@ plt.plot(t, df[2], 'k-', label='_nolegend_')
 plt.plot(t[igrn], df[2][igrn], 'og', label="Successful Query")
 plt.plot(t[iyel], df[2][iyel], 'o', color='gold', label="Other Error")
 plt.plot(t[ired], df[2][ired], 'or', label="502 Error")
+plt.plot(t[iblk], df[2][iblk], 'ok', label="Request Timeout")
 makePlotNice()
 lgd = addLegend()
 
