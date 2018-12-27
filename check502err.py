@@ -21,21 +21,28 @@ t_str = t_now.strftime('%Y-%m-%dT%H:%M:00.000Z')
 
 # Try to get data and "Time Request
 t_bef = datetime.utcnow()
-res = requests.get(url, auth=(UKEY, TOKE), timeout=10, verify=False)
-t_aft = datetime.utcnow()
+try:
+    res = requests.get(url, auth=(UKEY, TOKE), timeout=10, verify=False)
+    t_aft = datetime.utcnow()
 
-# Calculate Run Time Difference
-tdiff = t_aft - t_bef
-tdiff = tdiff.seconds + (tdiff.microseconds*1E-6)
+    # Calculate Run Time Difference
+    tdiff = t_aft - t_bef
+    tdiff = tdiff.seconds + (tdiff.microseconds*1E-6)
 
-# Assign values based on status code from request
-if res.status_code == 502:
-    value_502 = 0
-elif res.status_code == 200:
-    value_502 = 2
-else:
+    # Assign values based on status code from request
+    if res.status_code == 502:
+        value_502 = 0
+    elif res.status_code == 200:
+        value_502 = 2
+    else:
+        value_502 = 1
+    print("Status Code: %i" % res.status_code)
+
+except err:
+    print("Timeout likely.")
+    print(err)
+    tdiff=10000000.0
     value_502 = 1
-print("Status Code: %i" % res.status_code)
 
 # Add Message to Log
 file_entry = "%s,%i,%2.5f\n" % (t_str, value_502, tdiff)
@@ -44,3 +51,4 @@ for t_win in time_windows:
     f = open(log_file, "a+")
     f.write(file_entry)
     f.close()
+
