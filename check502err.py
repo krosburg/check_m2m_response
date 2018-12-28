@@ -34,7 +34,7 @@ try:
         value_502 = 1
     print("Status Code: %i" % res.status_code)
 
-except err:
+except requests.exceptions.timeout or socket.timeout:
     t_aft = datetime.utcnow()
     print("Timeout likely.")
     print(err)
