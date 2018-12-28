@@ -34,6 +34,7 @@ def saveFig(fname, lgd):
 def makePlotNice():
     """Add xlims, ylabel, title, and grid to plot"""
     plt.ylim(ylim)
+    plt.xlim(xlims)
     plt.ylabel("Reponse Time (s)", fontsize=label_size, fontweight=label_wt)
     plt.title("M2M Response Time & Status", fontsize=title_size, fontweight=title_wt)
     plt.grid(True, linestyle='dashed', linewidth=2)
@@ -47,9 +48,9 @@ def tidyXAxis(date_fmt, tsize):
 
 def addLegend():
     """Adds legend to plot."""
-    box_y = -.50*(1 + (2.25*.225))
-    return plt.legend(loc='lower right', bbox_to_anchor=(1.005, box_y),
-                      fontsize=20, frameon=False)
+    box_y = -.50*0.65
+    return plt.legend(loc='upper center', bbox_to_anchor=(0.5, box_y),
+                      fontsize=legtx_size, frameon=True, ncol=4)
 
 
 # Get Command Line Args
@@ -63,10 +64,10 @@ log_file = log_dir + file_base + ".log"
 
 # Define Plotting Variables
 ylim = [0, 15]
-label_size = 23
-title_size = 30
-value_size = 22
-legtx_size = 24
+label_size = 21
+title_size = 28
+value_size = 20
+legtx_size = 18
 label_wt = "bold"
 title_wt = "bold"
 
@@ -84,18 +85,24 @@ iyel = df.index[df[1] == 1].tolist()
 igrn = df.index[df[1] == 2].tolist()
 iblk = df.index[df[1] == 3].tolist()
 
+# Limits
+xlims = [np.nanmin(t), np.nanmax(t)]
+
 # Plot Datas
 fig = plt.figure(1, figsize=(18, 4.475))
-plt.plot(t, df[2], 'k-', label='_nolegend_')
+if "month" not in t_win and "year" not in t_win:
+    plt.plot(t, df[2], 'k-', label='_nolegend_')
+else:
+    plt.plot(t, df[2], '-', color='lightgray', label='_nolegend_')
 plt.plot(t[igrn], df[2][igrn], 'og', label="Successful Query")
 plt.plot(t[iyel], df[2][iyel], 'o', color='gold', label="Other Error")
 plt.plot(t[ired], df[2][ired], 'or', label="502 Error")
-plt.plot(t[iblk], df[2][iblk], 'ok', label="Request Timeout")
+plt.plot(t[iblk], df[2][iblk], 'o', color='maroon', label="Request Timeout")
 makePlotNice()
 lgd = addLegend()
 
 # Tidy up the X-Axis
-tidyXAxis('%H:%M\n%m-%d-%y', value_size)
+tidyXAxis('%H:%M\n%d-%b\n%Y', value_size)
 
 # Save FIgure
 saveFig(img_dir + file_base, lgd)
