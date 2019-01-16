@@ -1,4 +1,5 @@
 import requests
+import socket
 from datetime import datetime
 from ooi_globals import U
 from ooicreds import UKEY, TOKE
@@ -35,7 +36,7 @@ try:
     print("Status Code: %i" % res.status_code)
 
 #except requests.exceptions.timeout or socket.timeout:
-except socket.timeout:
+except (requests.exceptions.ReadTimeout, socket.timeout, urllib3.exceptions.ReadTimeoutError) as errex:
     t_aft = datetime.utcnow()
     print("Timeout likely.")
     print(err)
