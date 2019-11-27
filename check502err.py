@@ -35,12 +35,17 @@ try:
         value_502 = 1
     print("Status Code: %i" % res.status_code)
 
-#except requests.exceptions.timeout or socket.timeout:
-except (requests.exceptions.ReadTimeout, socket.timeout, urllib3.exceptions.ReadTimeoutError) as errex:
+#except (requests.exceptions.ReadTimeout, socket.timeout, urllib3.exceptions.ReadTimeoutError) as errex:
+except (requests.exceptions.ReadTimeout, socket.timeout) as errex:
     t_aft = datetime.utcnow()
     print("Timeout likely.")
-    print(err)
+    print(errex)
     value_502 = 3
+	
+except err:
+	t_aft = datetime.utcnow()
+	print("Other Error Occured")
+	value_502 = 1
 
 # Calculate Run Time Difference
 tdiff = t_aft - t_bef
